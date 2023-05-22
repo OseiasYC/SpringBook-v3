@@ -32,9 +32,19 @@ public class ProfessorController {
         professorService.update(professor);
     }
 
+    @PutMapping("/insert/{professor_id}/{subject_id}")
+    public void insertProfessorSubject(@PathVariable("professor_id") Long professorId, @PathVariable("subject_id")Long subjectId){
+        professorService.insertProfessorSubject(professorId, subjectId);
+    }
+
     @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable Long id){
         professorService.deleteById(id);
+    }
+
+    @DeleteMapping("/delete/{professor_id}/{subject_id}")
+    public void removeProfessorSubject(@PathVariable("professor_id") Long professorId, @PathVariable("subject_id")Long subjectId){
+        professorService.removeProfessorSubject(professorId, subjectId);
     }
 
     @GetMapping("/findAll")
@@ -42,8 +52,8 @@ public class ProfessorController {
         return professorService.findAll();
     }
 
-    @GetMapping("/get/{id}")
-    public Professor get(@PathVariable Long id){
+    @GetMapping("/find/{id}")
+    public Professor find(@PathVariable Long id){
         return professorService.findById(id);
     }
 }

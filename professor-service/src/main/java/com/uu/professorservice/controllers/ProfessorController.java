@@ -52,7 +52,7 @@ public class ProfessorController {
         return professorService.findAll();
     }
 
-    @GetMapping("/find/{id}")
+    @GetMapping("/{id}")
     public Professor find(@PathVariable Long id){
         return professorService.findById(id);
     }

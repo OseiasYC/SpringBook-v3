@@ -35,7 +35,6 @@ public class BookingService {
     LabClient labClient;
 
     public void save(Booking booking) {
-
         booking.setProfessor(professorClient.find(booking.getProfessor().getId()));
         booking.setSubject(professorClient.findSubject(booking.getSubject().getId()));
         booking.setLab(labClient.find(booking.getLab().getId()));

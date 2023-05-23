@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.uu.professorservice.interfaces.ProfessorRepository;
 import com.uu.professorservice.interfaces.SubjectRepository;
 import com.uu.professorservice.models.Professor;
-import com.uu.professorservice.models.Subject;
 
 import jakarta.transaction.Transactional;
 

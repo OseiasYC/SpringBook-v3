@@ -1,4 +1,4 @@
--- LABS:
+--LABS:
     INSERT INTO lab (lami, description, status, desktops, location) 
     VALUES 
         ('LAMI 1', 'Laboratório de Micro Informática 1', true, 20, 'B413'), 

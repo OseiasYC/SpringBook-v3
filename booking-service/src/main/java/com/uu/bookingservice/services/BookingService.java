@@ -29,6 +29,14 @@ public class BookingService {
         bookingRepository.save(booking);
     }
 
+    public void delete(Long id) {
+        bookingRepository.deleteById(id);
+    }
+
+    public void update(Booking booking) {
+        bookingRepository.update(booking);
+    }
+
     public ResponseEntity<String> approve(Long id){
         Optional<Booking> booking = bookingRepository.findById(id);
 

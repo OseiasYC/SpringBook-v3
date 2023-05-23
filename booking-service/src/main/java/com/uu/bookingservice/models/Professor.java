@@ -27,6 +27,7 @@ public class Professor {
     @OneToMany(mappedBy = "professor")
     private List<Booking> bookings;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "professor_subject", 
     joinColumns = @JoinColumn(name = "professor_id"), 

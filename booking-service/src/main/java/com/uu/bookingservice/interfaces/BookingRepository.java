@@ -7,12 +7,14 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.uu.bookingservice.models.Booking;
 
 @Repository
-public interface BookingRepository extends JpaRepository<Booking, Long>{
+public interface BookingRepository extends JpaRepository<Booking, Long> {
+
     @Query(value = "SELECT * FROM booking WHERE approved = false", nativeQuery = true)
     List<Booking> findPending();
 
@@ -27,6 +29,10 @@ public interface BookingRepository extends JpaRepository<Booking, Long>{
 
     @Query(value = "SELECT * FROM booking WHERE lab_id = ?1", nativeQuery = true)
     List<Booking> findBookingsByLabId(Long id);
+
+    @Modifying
+    @Query(value = "UPDATE booking SET professor_id = :#{#booking.professor.id}, subject_id = :#{#booking.subject.id}, lab_id = :#{#booking.lab.id}, time_init = :#{#booking.timeInit}, time_final = :#{#booking.timeFinal}", nativeQuery = true)
+    void update(@Param("booking") Booking booking);
 
     @Modifying
     @Query(value = "UPDATE booking SET approved = true WHERE id = ?1", nativeQuery = true)

@@ -4,14 +4,20 @@
 
 --SUBJECT:
     INSERT INTO subject (name)
-        VALUES ('Estrutura de Dados');
+        VALUES ('Estrutura de Dados'), ('Segurança da Informação');
 
 --PROFESSOR:
-    --FERNANDO:
+    --SEMÍRAMES:
         INSERT INTO professor (name)
-        VALUES ('Fernando Cézar Reis Borges');
+        VALUES ('Semírames Ribeiro de Assis');
         INSERT INTO professor_subject (professor_id, subject_id)
-        VALUES (1, 1);
+        VALUES (1, 2);
+    
+    --GUERRA:
+    INSERT INTO professor (name)
+        VALUES ('Fernando Trioschi Fernandes Guerra');
+        INSERT INTO professor_subject (professor_id, subject_id)
+        VALUES (2, 1);
 
 --BOOKING:
     INSERT INTO booking (approved, lab_id, professor_id, subject_id, time_init, time_final, time_request)

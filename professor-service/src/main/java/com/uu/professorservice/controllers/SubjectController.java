@@ -47,7 +47,7 @@ public class SubjectController {
         return subjectService.findSubjectsByProfessorId(id);
     }
 
-    @GetMapping("/find/{id}")
+    @GetMapping("/{id}")
     public Subject find(@PathVariable long id){
         return subjectService.findById(id);
     }

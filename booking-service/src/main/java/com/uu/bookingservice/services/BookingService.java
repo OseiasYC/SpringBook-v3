@@ -35,13 +35,12 @@ public class BookingService {
     LabClient labClient;
 
     public void save(Booking booking) {
-        Booking save = new Booking();
 
-        save.setProfessor(professorClient.find(booking.getProfessor().getId()));
-        // save.setSubject(professorClient.find());
-        save.setLab(labClient.find(booking.getLab().getId()));
+        booking.setProfessor(professorClient.find(booking.getProfessor().getId()));
+        booking.setSubject(professorClient.findSubject(booking.getSubject().getId()));
+        booking.setLab(labClient.find(booking.getLab().getId()));
 
-        bookingRepository.save(save);
+       //TODO bookingRepository.save(booking);
     }
 
     public void delete(Long id) {

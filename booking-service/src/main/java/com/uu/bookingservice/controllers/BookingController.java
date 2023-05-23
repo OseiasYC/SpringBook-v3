@@ -25,8 +25,8 @@ public class BookingController {
     BookingService bookingService;
     
     @PostMapping("/save")
-    public void save(@RequestBody Booking booking){
-        bookingService.save(booking);
+    public ResponseEntity<String> save(@RequestBody Booking booking){
+        return bookingService.save(booking);
     }
 
     @DeleteMapping("/delete/{id}")

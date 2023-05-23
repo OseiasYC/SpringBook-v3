@@ -36,8 +36,12 @@ public class BookingService {
     @Autowired
     LabClient labClient;
 
-    public void save(Booking booking) {
+    public ResponseEntity<String> save(Booking booking) {
+        if (booking.getTimeFinal().isBefore(booking.getTimeInit()) || booking.getTimeInit().isBefore(LocalDateTime.now())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Time conflicting. Check the inputs.");
+        }
         bookingRepository.save(booking);
+        return ResponseEntity.ok("Sent to approve.");
     }
 
     public void delete(Long id) {
@@ -50,14 +54,15 @@ public class BookingService {
 
     public ResponseEntity<String> approve(Long id) {
         Optional<Booking> booking = bookingRepository.findById(id);
+        Booking b = booking.get();
 
         if (isBusy(booking)) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("This lab is busy between " +
-                    booking.get().getTimeInit() + " and " + booking.get().getTimeFinal());
-        } else {
-            bookingRepository.approve(id);
-            return ResponseEntity.ok("Approved.");
+                    b.getTimeInit() + " and " + b.getTimeFinal() + ".");
         }
+
+        bookingRepository.approve(id);
+        return ResponseEntity.ok("Approved.");
     }
 
     @Async

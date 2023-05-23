@@ -1,7 +1,9 @@
 package com.uu.bookingservice.services;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +14,11 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import com.uu.bookingservice.dto.BookingDTO;
 import com.uu.bookingservice.interfaces.BookingRepository;
 import com.uu.bookingservice.interfaces.LabClient;
 import com.uu.bookingservice.interfaces.ProfessorClient;
 import com.uu.bookingservice.models.Booking;
-import com.uu.bookingservice.models.Subject;
 
 import jakarta.transaction.Transactional;
 
@@ -24,7 +26,7 @@ import jakarta.transaction.Transactional;
 @EnableScheduling
 @Transactional
 public class BookingService {
-    
+
     @Autowired
     BookingRepository bookingRepository;
 
@@ -35,11 +37,7 @@ public class BookingService {
     LabClient labClient;
 
     public void save(Booking booking) {
-        booking.setProfessor(professorClient.find(booking.getProfessor().getId()));
-        booking.setSubject(professorClient.findSubject(booking.getSubject().getId()));
-        booking.setLab(labClient.find(booking.getLab().getId()));
-
-       //TODO bookingRepository.save(booking);
+        bookingRepository.save(booking);
     }
 
     public void delete(Long id) {
@@ -50,12 +48,12 @@ public class BookingService {
         bookingRepository.update(booking);
     }
 
-    public ResponseEntity<String> approve(Long id){
+    public ResponseEntity<String> approve(Long id) {
         Optional<Booking> booking = bookingRepository.findById(id);
 
         if (isBusy(booking)) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("This lab is busy between " +
-            booking.get().getTimeInit() + " and " + booking.get().getTimeFinal());
+                    booking.get().getTimeInit() + " and " + booking.get().getTimeFinal());
         } else {
             bookingRepository.approve(id);
             return ResponseEntity.ok("Approved.");
@@ -68,30 +66,53 @@ public class BookingService {
         bookingRepository.deleteByTimeFinalBefore(LocalDateTime.now());
     }
 
-    public List<Booking> findByProfessor(Long id){
-        return bookingRepository.findByProfessor(id);
+    public List<BookingDTO> findByProfessor(Long id) {
+        List<Booking> bookings = bookingRepository.findByProfessor(id);
+        return createBookingDTO(bookings);
     }
 
-    public List<Booking> findPending() {
-        return bookingRepository.findPending();
+    public List<BookingDTO> findPending() {
+        List<Booking> bookings = bookingRepository.findPending();
+        return createBookingDTO(bookings);
     }
 
-    public List<Booking> findApproved() {
-        return bookingRepository.findApproved();
+    public List<BookingDTO> findApproved() {
+        List<Booking> bookings = bookingRepository.findApproved();
+        return createBookingDTO(bookings);
     }
 
-    public List<Booking> findAll(){
-        return bookingRepository.findAll();
+    public List<BookingDTO> findAll() {
+        List<Booking> bookings = bookingRepository.findAll();
+        return createBookingDTO(bookings);
     }
 
-    public Booking findById(Long id){
-        return bookingRepository.findById(id).get();
+    public List<BookingDTO> findById(Long id) {
+        List<Booking> bookings = new ArrayList<>();
+        bookings.add(bookingRepository.findById(id).get());
+        return createBookingDTO(bookings);
     }
 
     public boolean isBusy(Optional<Booking> booking) {
         return booking.map(b -> {
-            int count = bookingRepository.isBusy(b.getLab().getId(), b.getTimeInit(), b.getTimeFinal());
+            int count = bookingRepository.isBusy(b.getLabId(), b.getTimeInit(), b.getTimeFinal());
             return count > 0;
         }).orElse(false);
+    }
+
+    private List<BookingDTO> createBookingDTO(List<Booking> bookings) {
+        List<BookingDTO> bookingsDTO = new ArrayList<>();
+
+        for (Booking booking : bookings) {
+            Map<String, Object> professor = professorClient.find(booking.getProfessorId());
+            Map<String, Object> lab = labClient.find(booking.getLabId());
+            Map<String, Object> subject = professorClient.findSubject(booking.getSubjectId());
+        
+            professor.remove("subjects");
+        
+            BookingDTO bookingDTO = new BookingDTO(booking, professor, lab, subject);
+            bookingsDTO.add(bookingDTO);
+        }
+        
+        return bookingsDTO;
     }
 }

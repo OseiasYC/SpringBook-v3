@@ -13,7 +13,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.uu.bookingservice.interfaces.BookingRepository;
+import com.uu.bookingservice.interfaces.LabClient;
+import com.uu.bookingservice.interfaces.ProfessorClient;
 import com.uu.bookingservice.models.Booking;
+import com.uu.bookingservice.models.Subject;
 
 import jakarta.transaction.Transactional;
 
@@ -25,8 +28,20 @@ public class BookingService {
     @Autowired
     BookingRepository bookingRepository;
 
+    @Autowired
+    ProfessorClient professorClient;
+
+    @Autowired
+    LabClient labClient;
+
     public void save(Booking booking) {
-        bookingRepository.save(booking);
+        Booking save = new Booking();
+
+        save.setProfessor(professorClient.find(booking.getProfessor().getId()));
+        // save.setSubject(professorClient.find());
+        save.setLab(labClient.find(booking.getLab().getId()));
+
+        bookingRepository.save(save);
     }
 
     public void delete(Long id) {

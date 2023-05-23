@@ -34,6 +34,10 @@ public class SubjectService {
         return subjectRepository.findById(id).get();
     }
 
+    public List<Subject> findSubjectsByProfessorId(Long id) {
+        return subjectRepository.findSubjectsByProfessorId(id);
+    }
+
     public void update(Subject subject) {
         subjectRepository.update(subject);
     }

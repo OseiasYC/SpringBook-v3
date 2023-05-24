@@ -4,7 +4,7 @@
 
 ![banner](https://github.com/OseiasYC/SpringBook-v3/blob/main/banner.png)
 
-Springboot projects for managing and booking, labs and professors.
+Springboot projects for managing and booking, labs, professors and subjects.
 
 ### Technologies and dependencies (A-Z):
 * Java 20

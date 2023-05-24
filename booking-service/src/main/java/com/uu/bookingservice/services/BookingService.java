@@ -43,20 +43,26 @@ public class BookingService {
         if (booking.getTimeFinal().isBefore(booking.getTimeInit()) || booking.getTimeInit().isBefore(LocalDateTime.now())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Time conflicting. Check the inputs.");
         }
-        logService.insertedPending(booking);
+    
         bookingRepository.save(booking);
+        logService.insertedPending(bookingRepository.findById(booking.getId()).get());
         return ResponseEntity.ok("Sent to approve.");
     }
+    
 
     public void delete(Long id) {
-        Booking booking = bookingRepository.findById(id).get();
-        if (booking.isApproved()) {
-            logService.deletedApproved(booking);
-        } else {
-            logService.deletedPending(booking);
+        Optional<Booking> optionalBooking = bookingRepository.findById(id);
+        if (optionalBooking.isPresent()) {
+            Booking booking = optionalBooking.get();
+            bookingRepository.deleteById(id);
+            if (booking.isApproved()) {
+                logService.deletedApproved(booking);
+            } else {
+                logService.deletedPending(booking);
+            }
         }
-        bookingRepository.deleteById(id);
     }
+    
 
     public void update(Booking booking) {
         bookingRepository.update(booking);
@@ -122,13 +128,13 @@ public class BookingService {
             Map<String, Object> professor = professorClient.find(booking.getProfessorId());
             Map<String, Object> lab = labClient.find(booking.getLabId());
             Map<String, Object> subject = professorClient.findSubject(booking.getSubjectId());
-        
+
             professor.remove("subjects");
-        
+
             BookingDTO bookingDTO = new BookingDTO(booking, professor, lab, subject);
             bookingsDTO.add(bookingDTO);
         }
-        
+
         return bookingsDTO;
     }
 }

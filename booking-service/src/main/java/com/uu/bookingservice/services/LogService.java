@@ -9,7 +9,7 @@ import com.uu.bookingservice.models.Booking;
 @Service
 public class LogService {
     
-    private static final Logger log =LogManager.getLogger(LogService.class);
+    private static final Logger log = LogManager.getLogger(LogService.class);
 
     public void deletedPending(Booking booking) {
         log.info("Pending removed: {}", booking.toString());

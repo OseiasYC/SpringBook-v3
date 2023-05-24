@@ -9,7 +9,7 @@ Springboot projects for managing and booking, labs, professors and subjects.
 ### Technologies and dependencies (A-Z):
 * Java 20
 * Lombok
-* Log4j
+* Log4j2
 * PostgreSQL
 * Spring Boot DevTools
 * Spring Boot Starter Data JPA

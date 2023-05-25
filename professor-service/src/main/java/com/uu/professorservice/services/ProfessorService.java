@@ -19,7 +19,8 @@ public class ProfessorService {
     @Autowired
     private ProfessorRepository professorRepository;
 
-    @Autowired SubjectRepository subjectRepository;
+    @Autowired 
+    SubjectRepository subjectRepository;
 
     public void save(Professor professor) {
         professorRepository.save(professor);

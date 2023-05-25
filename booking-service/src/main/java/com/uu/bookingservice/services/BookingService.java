@@ -55,6 +55,7 @@ public class BookingService {
         if (optionalBooking.isPresent()) {
             Booking booking = optionalBooking.get();
             bookingRepository.deleteById(id);
+
             if (booking.isApproved()) {
                 logService.deletedApproved(booking);
             } else {

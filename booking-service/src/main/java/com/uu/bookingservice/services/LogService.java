@@ -20,11 +20,11 @@ public class LogService {
     }
     
     public void Pending(Booking booking) {
-        log.info("Pending: {}", booking.toString());
+        log.info("Pending added: {}", booking.toString());
     }
 
     public void Approved(Booking booking) {
-        log.info("Approved: {}", booking.toString());
+        log.info("Approved added: {}", booking.toString());
     }
 
     public void updatedPending(Booking booking) {

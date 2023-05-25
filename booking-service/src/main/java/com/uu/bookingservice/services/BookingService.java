@@ -36,20 +36,41 @@ public class BookingService {
     @Autowired
     LabClient labClient;
 
+    @Autowired
+    LogService logService;
+
     public ResponseEntity<String> save(Booking booking) {
         if (booking.getTimeFinal().isBefore(booking.getTimeInit()) || booking.getTimeInit().isBefore(LocalDateTime.now())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Time conflicting. Check the inputs.");
         }
+    
         bookingRepository.save(booking);
+        logService.insertedPending(bookingRepository.findById(booking.getId()).get());
         return ResponseEntity.ok("Sent to approve.");
     }
+    
 
     public void delete(Long id) {
-        bookingRepository.deleteById(id);
+        Optional<Booking> optionalBooking = bookingRepository.findById(id);
+        if (optionalBooking.isPresent()) {
+            Booking booking = optionalBooking.get();
+            bookingRepository.deleteById(id);
+            if (booking.isApproved()) {
+                logService.deletedApproved(booking);
+            } else {
+                logService.deletedPending(booking);
+            }
+        }
     }
+    
 
     public void update(Booking booking) {
         bookingRepository.update(booking);
+        if (booking.isApproved()) {
+            logService.updatedApproved(bookingRepository.findById(booking.getId()).get());
+        } else {
+            logService.updatedPending(bookingRepository.findById(booking.getId()).get());
+        }
     }
 
     public ResponseEntity<String> approve(Long id) {
@@ -62,6 +83,7 @@ public class BookingService {
         }
 
         bookingRepository.approve(id);
+        logService.insertedApproved(booking.get());
         return ResponseEntity.ok("Approved.");
     }
 
@@ -111,13 +133,13 @@ public class BookingService {
             Map<String, Object> professor = professorClient.find(booking.getProfessorId());
             Map<String, Object> lab = labClient.find(booking.getLabId());
             Map<String, Object> subject = professorClient.findSubject(booking.getSubjectId());
-        
+
             professor.remove("subjects");
-        
+
             BookingDTO bookingDTO = new BookingDTO(booking, professor, lab, subject);
             bookingsDTO.add(bookingDTO);
         }
-        
+
         return bookingsDTO;
     }
 }

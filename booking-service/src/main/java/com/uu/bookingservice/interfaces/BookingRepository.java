@@ -30,7 +30,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     List<Booking> findBookingsByLabId(Long id);
 
     @Modifying
-    @Query(value = "UPDATE booking SET professor_id = :#{#booking.professor.id}, subject_id = :#{#booking.subject.id}, lab_id = :#{#booking.lab.id}, time_init = :#{#booking.timeInit}, time_final = :#{#booking.timeFinal}", nativeQuery = true)
+    @Query(value = "UPDATE booking SET professor_id = :#{#booking.professorId}, subject_id = :#{#booking.subjectId}, lab_id = :#{#booking.labId}, time_init = :#{#booking.timeInit}, time_final = :#{#booking.timeFinal}", nativeQuery = true)
     void update(@Param("booking") Booking booking);
 
     @Modifying

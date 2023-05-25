@@ -45,7 +45,7 @@ public class BookingService {
         }
     
         bookingRepository.save(booking);
-        logService.insertedPending(bookingRepository.findById(booking.getId()).get());
+        logService.Pending(bookingRepository.findById(booking.getId()).get());
         return ResponseEntity.ok("Sent to approve.");
     }
     
@@ -83,7 +83,7 @@ public class BookingService {
         }
 
         bookingRepository.approve(id);
-        logService.insertedApproved(booking.get());
+        logService.Approved(booking.get());
         return ResponseEntity.ok("Approved.");
     }
 

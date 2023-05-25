@@ -1,0 +1,35 @@
+{
+    // Use o IntelliSense para saber mais sobre os atributos possíveis.
+    // Focalizar para exibir as descrições dos atributos existentes.
+    // Para obter mais informações, acesse: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "BookingServiceApplication",
+            "request": "launch",
+            "mainClass": "com.uu.bookingservice.BookingServiceApplication",
+            "projectName": "booking-service"
+        },
+        {
+            "type": "java",
+            "name": "LabServiceApplication",
+            "request": "launch",
+            "mainClass": "com.uu.labservice.LabServiceApplication",
+            "projectName": "lab-service"
+        },
+        {
+            "type": "java",
+            "name": "ProfessorServiceApplication",
+            "request": "launch",
+            "mainClass": "com.uu.professorservice.ProfessorServiceApplication",
+            "projectName": "professor-service"
+        }
+    ]
+}

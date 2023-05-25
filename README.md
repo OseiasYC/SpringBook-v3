@@ -30,7 +30,5 @@ Springboot projects for managing and booking, labs, professors and subjects.
 ### About:
 [SpringBook v2 - The monolithic version](https://github.com/OseiasYC/SpringBook/tree/main)
 
-[Document C4 and Class diagram](#)
-
 ---
  _Build with ❤️ - [MIT](https://github.com/OseiasYC/SpringBook-v3/blob/main/LICENSE)._

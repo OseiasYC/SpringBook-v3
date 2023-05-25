@@ -15,15 +15,23 @@ public class LogService {
         log.info("Pending removed: {}", booking.toString());
     }
 
+    public void deletedApproved(Booking booking) {
+        log.info("Approved removed: {}", booking.toString());
+    }
+    
     public void insertedPending(Booking booking) {
         log.info("Pending inserted: {}", booking.toString());
     }
 
-    public void deletedApproved(Booking booking) {
-        log.info("Approved removed: {}", booking.toString());
-    }
-
     public void insertedApproved(Booking booking) {
         log.info("Approved inserted: {}", booking.toString());
+    }
+
+    public void updatedPending(Booking booking) {
+        log.info("Pending updated: {}", booking.toString());
+    }
+
+    public void updatedApproved(Booking booking) {
+        log.info("Approved updated: {}", booking.toString());
     }
 }

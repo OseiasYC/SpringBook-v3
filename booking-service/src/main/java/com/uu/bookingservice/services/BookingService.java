@@ -66,6 +66,11 @@ public class BookingService {
 
     public void update(Booking booking) {
         bookingRepository.update(booking);
+        if (booking.isApproved()) {
+            logService.updatedApproved(bookingRepository.findById(booking.getId()).get());
+        } else {
+            logService.updatedPending(bookingRepository.findById(booking.getId()).get());
+        }
     }
 
     public ResponseEntity<String> approve(Long id) {
@@ -77,8 +82,8 @@ public class BookingService {
                     b.getTimeInit() + " and " + b.getTimeFinal() + ".");
         }
 
-        logService.insertedApproved(booking.get());
         bookingRepository.approve(id);
+        logService.insertedApproved(booking.get());
         return ResponseEntity.ok("Approved.");
     }
 
